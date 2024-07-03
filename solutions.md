@@ -8,7 +8,7 @@
 
 **preparation**
 ```sh
-- Create an Ubuntu server (Ubuntu version 20.04) on any platform you want
+- Create an Ubuntu server (Ubuntu version 24.04) on any platform you want
 - Configure ssh access to your server (open port 22, create ssh key access)
 - Set "server IP address", "user" and "ssh private key path" inside "hosts-deploy-app" file
 - Fix the test in the application (if you have not already done it in the Build tools module exercises) to allow building it successfully
@@ -97,12 +97,12 @@ ansible-playbook 3-provision-jenkins-ec2.yaml --extra-vars "ssh_key_path=/path/t
 ansible-playbook -i hosts-jenkins-server 4-install-jenkins-ubuntu.yaml --extra-vars "host_os=ubuntu aws_region=your-aws-region"
 
 # Execute to Create Jenkins server on --amazon-linux-- EC2 instance
-ansible-playbook 3-provision-jenkins-ec2.yaml --extra-vars "ssh_key_path=/path/to/ssh-key/file aws_region=your-aws-region key_name=your-key-pair-name subnet_id=your-subnet-id ami_id=image-id-for-ubuntu ssh_user=ubuntu"
+ansible-playbook 3-provision-jenkins-ec2.yaml --extra-vars "ssh_key_path=/path/to/ssh-key/file aws_region=your-aws-region key_name=your-key-pair-name subnet_id=your-subnet-id ami_id=image-id-for-amazon-linux ssh_user=ec2-user"
 
 # Wait until the server is fully initialised
 
 # Execute to configure Jenkins
-ansible-playbook -i hosts-jenkins-server 4-install-jenkins-ubuntu.yaml --extra-vars "host_os=amazon-linux aws_region=your-aws-region"
+ansible-playbook -i hosts-jenkins-server 4-install-jenkins-ubuntu.yaml --extra-vars "host_os=ubuntu aws_region=your-aws-region"
 
 # NOTES:
 - When executing "3-provision-jenkins-ec2.yaml" script, the only difference between the 2 is the "ami_id" value. So you either provide the "amazon-linux" ami-id or "ubuntu" ami-id
@@ -180,7 +180,7 @@ Because we will create the "ansible-server" and "web-server" in the public subne
 # NOTE: make sure to set the correct variable values for aws_region etc for your playbook execution:
 
 # Execute playbook to provision ansible control server itself
-ansible-playbook 6-provision-ansible-server.yaml --extra-vars "aws_region=eu-west-3 key_name=ansible-control-server-key subnet_id=public-subnet-id ami_id=ami-0c6ebbd55ab05f070"
+ansible-playbook 6-provision-ansible-server.yaml --extra-vars "aws_region=eu-west-3 key_name=ansible-control-server-key subnet_id=public-subnet-id ami_id=ami-id"
 
 # Wait until the server is fully initialised
 
@@ -192,7 +192,7 @@ ansible-playbook -i 6-inventory_aws_ec2.yaml 6-configure-ansible-server.yaml
 ssh -i ~/Downloads/ansible-control-server-key.pem ubuntu@ansible-server-public-ip
 
 # Execute to provision both (ubuntu) servers inside the same VPC
-ansible-playbook 6-provision-app-servers.yaml --extra-vars "aws_region=eu-west-3 key_name=ansible-managed-server-key subnet_id_web=public-subnet-id subnet_id_db=private-subnet-id ami_id=ami-0c6ebbd55ab05f070"
+ansible-playbook 6-provision-app-servers.yaml --extra-vars "aws_region=eu-west-3 key_name=ansible-managed-server-key subnet_id_web=public-subnet-id subnet_id_db=private-subnet-id ami_id=ami-id"
 
 # Wait until the servers are fully initialised
 
@@ -217,7 +217,7 @@ ansible-playbook -i 6-inventory_aws_ec2.yaml 6-configure-app-servers.yaml
 - kubernetes-manifests/exercise-7/*.yaml
 
 # To dockerize the java-mysql application, use the Dockerfile from solutions branch: 
-https://gitlab.com/devops-bootcamp3/bootcamp-java-mysql/-/blob/feature/solutions/Dockerfile
+https://gitlab.com/twn-devops-bootcamp/latest/15-ansible/ansible-exercises/-/blob/feature/solutions/Dockerfile
 
 # Build and push the image with name: "your-docker-hub-id/demo-app:java-mysql-app" (that's how we are referencing it in kubernetes-manifests/exercise-7/java-app.yaml) to your private dockerhub repo. 
 

@@ -33,7 +33,7 @@
         name: mysql-release
         chart_ref: bitnami/mysql
         release_namespace: default
-        # you can set one of minikune, LKE or EKS chart values file from exercise-8 directory
+        # you can set one of minikube, LKE or EKS chart values file from exercise-8 directory
         values: "{{ lookup('template', 'kubernetes-manifests/exercise-8/mysql-chart-values-minikube.yaml') | from_yaml }}"
     - name: Deploy Java application manifests
       kubernetes.core.k8s:

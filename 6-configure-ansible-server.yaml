@@ -6,11 +6,11 @@
   tasks:
   - name: Update apt repo cache
     apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
-  - name: Instal ansible and pip3
+  - name: Install ansible and boto3
     apt: 
       name:
       - ansible
-      - python3-pip
+      - python3-boto3
 
 - name: Install Ansible
   hosts: tag_Name_ansible_server # from dynamic inventory file
@@ -25,11 +25,6 @@
     community.general.ansible_galaxy_install:
       type: collection
       name: amazon.aws
-  - name: Install pip3 packages for aws
-    pip:
-      name:
-      - boto3
-      - botocore
   - name: Ensure .aws dir exists
     file: path=~/.aws state=directory
   - name: Copy aws credentials
@@ -55,5 +50,3 @@
     ansible.builtin.copy:
       src: ~/Demo-projects/Bootcamp/Exercises/bootcamp-java-mysql-project/build/libs/bootcamp-java-mysql-project-1.0-SNAPSHOT.jar
       dest: /home/ubuntu/
-
-

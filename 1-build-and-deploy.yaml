@@ -14,7 +14,7 @@
   tasks:
   - name: Update apt repo cache
     apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
-  - name: Instal java version 11
+  - name: Install java version 11
     apt: name=openjdk-11-jre-headless
 
 - name: Build application
@@ -24,7 +24,7 @@
   - name: Build jar
     ansible.builtin.command:
       chdir: "{{ project_dir }}"
-      cmd: ./gradlew clean build
+      cmd: gradle clean build
 
 - name: Stop the currently running java application and remove old jar file
   hosts: web_server

@@ -17,14 +17,12 @@
   tasks:
   - name: Update apt repo cache
     apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
-  - name: Instal Docker
+  - name: Install Docker
     apt: name=docker.io
-  - name: Instal pip3
+  - name: Install pip3
     apt: name=python3-pip
   - name: Install Docker python module
-    pip:
-      name: 
-        - docker    
+    apt: name=python3-docker
   - name: Start Docker Service
     systemd:
       name: docker
